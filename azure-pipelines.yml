@@ -13,7 +13,7 @@ stages:
       displayName: Install Newman Runner
       inputs:
         script: 'sudo npm install -g newman'
-        workingDirectory: ${System.DefaultWorkingDirectory}
+        workingDirectory: '{{System.DefaultWorkingDirectory}}'
     - task: CmdLine@2
       displayName: run newman test
       continueOnError: true
