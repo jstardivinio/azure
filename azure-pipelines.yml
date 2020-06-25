@@ -1,19 +1,22 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
 
-trigger:
-- master
 
-pool:
-  vmImage: 'ubuntu-latest'
+name: Azure Pipelines
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    pool:
+      name: Hosted Ubuntu 1804
+    steps:
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    - task: CmdLine@2
+      displayName: Install Newman Runner
+      inputs:
+        script: 'sudo npm install -g newman'
+        workingDirectory: ${System.DefaultWorkingDirectory}
+    - task: CmdLine@2
+      displayName: run newman test
+      continueOnError: true
+      inputs:
+        script: 'newman run StarterAPIs.json'
+        workingDirectory: 'starter-code/automatedtesting/postman'
